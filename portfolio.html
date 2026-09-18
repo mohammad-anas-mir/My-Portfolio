@@ -361,10 +361,10 @@
     <!-- Ye form kahin bhejta nahi (JS ya backend nahi hai).
          Agar real message chahiye to action="mailto:youremail@gmail.com" 
          laga sakte ho, ya Formspree jaisi service use karo. -->
-    <form>
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <textarea placeholder="Your Message" required></textarea>
+    <form action="https://formspree.io/f/mgavegoz" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" placeholder="Your Message" required></textarea>
       <button type="submit" class="btn btn-primary" style="border:none; cursor:pointer;">Send Message</button>
     </form>
   </section>
