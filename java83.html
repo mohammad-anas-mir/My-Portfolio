@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>To-Do-List</title>
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+	<style>
+
+		:root {
+			--paper: #FAF6EF;
+			--card: #FFFFFF;
+			--ink: #2B2620;
+			--ink-soft: #7A7266;
+			--teal: #1E5A50;
+			--teal-dark: #123D36;
+			--coral: #C45B45;
+			--coral-dark: #A6432F;
+			--coral-soft: #F3DED8;
+			--sage: #2F7A4F;
+			--sage-soft: #DDE8DD;
+			--line: #EAE3D6;
+		}
+
+		* 
+		{
+		  box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			font-family: 'Inter', Arial, sans-serif;
+			background: var(--paper);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			color: var(--ink);
+			padding: 40px 20px;
+		}
+
+		.todo-container {
+			width: 90%;
+			max-width: 650px;
+			background: var(--card);
+			padding: 34px;
+			border-radius: 20px;
+			border: 1px solid var(--line);
+			box-shadow: 0 20px 40px rgba(43, 38, 32, 0.06);
+		}
+
+		h1 {
+			margin: 0 0 25px;
+			text-align: center;
+			font-family: 'Fraunces', serif;
+			font-weight: 600;
+			font-size: 30px;
+			color: var(--teal-dark);
+		}
+
+		.input-area {
+			display: flex;
+			gap: 10px;
+			margin-bottom: 25px;
+		}
+
+		#name {
+			flex: 1;
+			padding: 13px 15px;
+			border: 1px solid var(--line);
+			border-radius: 10px;
+			font-size: 15px;
+			outline: none;
+			background: #FDFCFA;
+			color: var(--ink);
+		}
+
+		#name:focus {
+			border-color: var(--teal);
+		}
+
+		.input-area button {
+			padding: 13px 22px;
+			border: none;
+			border-radius: 10px;
+			background: var(--teal);
+			color: white;
+			font-size: 15px;
+			font-weight: 500;
+			cursor: pointer;
+		}
+
+		.input-area button:hover {
+			background: var(--teal-dark);
+		}
+
+		#wrapper {
+			margin-top: 20px;
+			overflow-x: auto;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		th {
+			text-align: left;
+			padding: 13px 8px;
+			background: transparent;
+			color: var(--ink-soft);
+			font-size: 12px;
+			font-weight: 500;
+			border-bottom: 1px solid var(--line);
+		}
+
+		td {
+			padding: 14px 8px;
+			border-bottom: 1px solid var(--line);
+			color: var(--ink);
+			font-size: 14px;
+		}
+
+		tr:last-child td {
+			border-bottom: none;                                                    
+		}
+
+		td:nth-child(1) {
+			width: 40px;
+			color: var(--ink-soft);
+			font-size: 13px;
+		}
+
+		.status-pill {
+			display: inline-block;
+			padding: 4px 10px;
+			border-radius: 20px;
+			font-size: 12px;
+			font-weight: 600;
+		}
+
+		.status-pill.pending {
+			background: var(--coral-soft);
+			color: var(--coral);
+		}
+
+		.status-pill.completed {
+			background: var(--sage-soft);
+			color: var(--sage);
+		}
+
+		td button {
+			border: none;
+			border-radius: 8px;
+			padding: 7px 12px;
+			font-size: 13px;
+			font-weight: 500;
+			cursor: pointer;
+			white-space: nowrap;
+		}
+
+		td:nth-child(4) button {
+			background: var(--coral-soft);
+			color: var(--coral);
+		}
+
+		td:nth-child(4) button:hover {
+			background: #ecccc4;
+		}
+
+		td:nth-child(5) button {
+			background: var(--sage-soft);
+			color: var(--sage);
+		}
+
+		td:nth-child(5) button:hover {
+			background: #cfe0cf;
+		}
+
+		#filters {
+			display: flex;
+			gap: 10px;
+			margin-top: 25px;
+			padding-top: 20px;
+			border-top: 1px solid var(--line);
+		}
+
+		.filter {
+			flex: 1;
+			padding: 11px;
+			border: 1px solid var(--line);
+			background: var(--card);
+			border-radius: 9px;
+			cursor: pointer;
+			font-size: 14px;
+			font-family: 'Inter', sans-serif;
+			color: var(--ink-soft);
+		}
+
+		.filter:hover {
+			background: #FBF8F2;
+		}
+
+		.filter.active {
+			background: var(--teal);
+			color: white;
+			border-color: var(--teal);
+		}
+
+		#wrapper p {
+			margin: 8px 0;
+			padding: 13px 15px;
+			background: #FBF8F2;
+			border-radius: 9px;
+			color: var(--ink);
+		}
+
+		.delete-all-btn {
+			display: block;
+			width: 100%;
+			margin-top: 16px;
+			padding: 13px;
+			border: none;
+			border-radius: 10px;
+			background: var(--coral);
+			color: white;
+			font-size: 14px;
+			font-weight: 600;
+			font-family: 'Inter', sans-serif;
+			cursor: pointer;
+		}
+
+		.delete-all-btn:hover {
+			background: var(--coral-dark);
+		}
+
+	</style>
+</head>
+
+<body>
+
+	<div class="todo-container">
+
+		<h1>My-Todo-List</h1>
+
+		<div class="input-area">
+
+			<input 
+				type="text" 
+				placeholder="Enter your task" 
+				id="name"
+			>
+
+			<button onclick="add()">Add</button>
+
+		</div>
+
+		<div id="wrapper">
+
+		</div>
+
+		<div id="filters">
+
+			<button class="filter active" id="allBtn" onclick="alltasks()">
+				All
+			</button>
+
+			<button 
+				class="filter" 
+				id="pendingBtn" 
+				onclick="showpending()">
+				Pending
+			</button>
+
+			<button class="filter" id="completedBtn" onclick="showcompleted()">
+				Completed
+			</button>
+
+		</div>
+
+		<button class="delete-all-btn" onclick="deleteall()">Delete All</button>
+
+	</div>
+
+
+	<script>
+		
+
+		todos = JSON.parse(localStorage.getItem("todos")) || [];
+display();
+
+		function add()
+		{
+			n=document.getElementById('name').value;
+
+			if(n == '')
+	{
+		return;  
+	}
+
+			obj={
+				id:todos.length+1,
+				taskname:n, 
+				status:'pending'
+			}
+
+			todos.push(obj)
+			localStorage.setItem("todos", JSON.stringify(todos))
+
+			display();
+
+			document.getElementById('name').value=' ';	
+		}
+
+		
+
+		function display()
+		{
+			temp=``;
+
+			temp+=`<table>
+			<tr>
+				<th>id</th>
+				<th>taskname</th>
+				<th>status</th>
+
+
+			</tr>`;
+
+			todos.forEach((t,index)=>{
+				temp+=`<tr>
+					<td>${t.id}</td>
+					<td>${t.taskname}</td>
+					<td><span class="status-pill ${t.status}">${t.status}</span></td>
+				<td><button onclick="deleteit(${index})">Delete</button></td>
+				<td><button onclick="done(${index})">Done</button></td>
+				</tr>`;
+			})
+
+			temp+=`</table>`;
+
+			document.getElementById('wrapper').innerHTML=temp;
+		}
+
+		function showpending()
+		{
+			 temp=``;
+
+			todos.forEach((t)=>{
+				if(t.status=='pending')
+				{
+					temp += `<p>${t.taskname}</p>`;
+				}
+			})
+
+			document.getElementById('wrapper').innerHTML=temp;
+		}
+
+
+		function deleteall()
+		{
+
+			todos=[];
+			localStorage.setItem	("todos", JSON.stringify(todos))
+            
+			display();
+
+		}
+
+
+		function deleteit(index)
+
+{
+	todos.splice(index,1);
+	localStorage.setItem("todos", JSON.stringify(todos))
+
+	display();
+}            
+
+function done(index)
+{
+	if(todos[index].status=='pending')
+	{
+		todos[index].status='completed'
+	}
+	else
+	{
+		(todos[index].status='pending')
+
+
+	}
+	localStorage.setItem("todos", JSON.stringify(todos))
+
+
+
+	display();	
+	}
+
+	function showcompleted()
+	{
+
+			 temp=``;
+
+			todos.forEach((t)=>{
+				if(t.status=='completed')
+				{
+					temp += `<p>${t.taskname}</p>`;
+				}
+			})
+
+			document.getElementById('wrapper').innerHTML=temp;
+
+	}
+
+
+	function alltasks()
+	{
+		display();
+		
+
+	}
+
+
+
+	</script>
+
+</body>
+</html>
