@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-family: "Segoe UI", system-ui, sans-serif;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 360px;
+            padding: 36px 30px;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, .25);
+        }
+
+        h1 {
+            margin: 0 0 24px;
+            text-align: center;
+            font-size: 26px;
+            color: #2d3142;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 44px 12px 14px;
+            margin-bottom: 16px;
+            font-size: 15px;
+            border: 1.5px solid #d9dce3;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, .25);
+        }
+
+        /* wrapper so the eye button sits inside the password field */
+        .pass-wrap {
+            position: relative;
+        }
+
+        /* the show/hide button: text hidden, icon drawn with Font Awesome */
+        #btn {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border: 0;
+            background: none;
+            color: #8a8fa3;
+            cursor: pointer;
+            font-size: 0;              /* hides the "show"/"hide" text set by your JS */
+            border-radius: 6px;
+        }
+
+        #btn:hover { color: #667eea; }
+
+        #btn::before {
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: 17px;
+        }
+
+        /* password hidden -> open eye */
+        #pass[type="password"] + #btn::before { content: "\f06e"; }
+
+        /* password visible -> crossed eye */
+        #pass[type="text"] + #btn::before { content: "\f070"; }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            background: #667eea;
+            border: 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background .2s;
+        }
+
+        input[type="submit"]:hover { background: #5568d3; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h1>Login Form</h1>
+        <input type="text" placeholder="Username ">
+
+        <div class="pass-wrap">
+            <input type="password" placeholder="Password" id="pass">
+            <button onclick="fun()" id="btn">show</button>
+        </div>
+
+        <input type="submit" value="Login">
+    </div>
+
+</body>
+</html>
+<script>
+    flag=0;
+
+    function fun()
+    {
+        if(flag==0)
+    {
+        document.getElementById('pass').type='text';
+        flag=1;
+        document.getElementById('btn').innerText='hide'
+    }
+    else{
+         document.getElementById('pass').type='password';
+        flag=0;
+        document.getElementById('btn').innerText='show'
+
+    }
+    }
+</script>
