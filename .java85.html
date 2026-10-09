@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+
+    <style>
+        :root {
+            --bg: #0B1220;
+            --surface: #131C2E;
+            --surface-2: #1B2740;
+            --border: #223049;
+            --text: #F1F5F9;
+            --text-soft: #CBD5E1;
+            --muted: #64748B;
+            --green: #10B981;
+            --green-dark: #0EA371;
+            --gold: #D4AF37;
+            --red: #EF4444;
+            --radius: 12px;
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            color-scheme: dark;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Segoe UI', system-ui, Arial, sans-serif;
+            background: var(--bg);
+            background-image:
+                radial-gradient(circle at 15% 10%, rgba(16, 185, 129, 0.14), transparent 40%),
+                radial-gradient(circle at 85% 90%, rgba(212, 175, 55, 0.12), transparent 40%);
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
+
+        /* ---------- Card ---------- */
+        .container {
+            width: 100%;
+            max-width: 640px;
+            background: linear-gradient(180deg, #16223A 0%, var(--surface) 100%);
+            padding: 36px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            animation: cardIn 0.7s var(--ease) both;
+            transition: box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+
+        .container:hover {
+            border-color: #2C3F60;
+            box-shadow:
+                0 28px 60px rgba(0, 0, 0, 0.55),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(24px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ---------- Header ---------- */
+        .brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 4px;
+        }
+
+        .brand svg {
+            width: 32px;
+            height: 32px;
+            flex-shrink: 0;
+            transition: transform 0.5s var(--ease), filter 0.3s ease;
+        }
+
+        .brand:hover svg {
+            transform: rotate(-12deg) scale(1.15);
+            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--text);
+            margin: 0 0 6px;
+            font-size: 28px;
+            letter-spacing: 0.5px;
+        }
+
+        h1 span {
+            background: linear-gradient(90deg, var(--green), #34D399);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 24px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            color: var(--text-soft);
+            margin: 32px 0 14px;
+            padding-bottom: 10px;
+            font-size: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--border);
+            position: relative;
+        }
+
+        h3::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 48px;
+            height: 2px;
+            background: var(--green);
+            border-radius: 2px;
+            transition: width 0.4s var(--ease);
+        }
+
+        .container:hover h3::after {
+            width: 96px;
+        }
+
+        /* ---------- Form controls ---------- */
+        .input-area {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        input[type="text"],
+        select {
+            padding: 13px 16px;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease,
+                        transform 0.2s var(--ease), background 0.2s ease;
+        }
+
+        input[type="text"] {
+            flex: 1 1 160px;
+            min-width: 0;
+        }
+
+        input[type="text"]::placeholder {
+            color: #475569;
+            transition: opacity 0.2s ease;
+        }
+
+        input[type="text"]:hover,
+        select:hover {
+            border-color: #33476A;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+            transform: translateY(-1px);
+        }
+
+        input[type="text"]:focus::placeholder {
+            opacity: 0.4;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            padding-right: 40px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+        }
+
+        #selectedfilter {
+            min-width: 160px;
+            margin-bottom: 8px;
+        }
+
+        /* ---------- Buttons ---------- */
+        button {
+            position: relative;
+            overflow: hidden;
+            border: none;
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s var(--ease), box-shadow 0.2s ease,
+                        background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        button:active {
+            transform: translateY(0) scale(0.96) !important;
+        }
+
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 3px;
+        }
+
+        .input-area button {
+            padding: 13px 24px;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, var(--green), var(--green-dark));
+            color: #062A20;
+        }
+
+        .btn-add::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+            transform: translateX(-120%);
+            transition: transform 0.6s var(--ease);
+        }
+
+        .btn-add:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-add:hover::after {
+            transform: translateX(120%);
+        }
+
+        .btn-clear {
+            background: transparent;
+            color: var(--red);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-clear:hover {
+            background: rgba(239, 68, 68, 0.12);
+            border-color: var(--red);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(239, 68, 68, 0.15);
+        }
+
+        /* ---------- Table ---------- */
+        #wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 10px;
+        }
+
+        th {
+            text-align: left;
+            padding: 13px 14px;
+            background: var(--surface-2);
+            color: #94A3B8;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        th:first-child { border-radius: 10px 0 0 10px; }
+        th:last-child  { border-radius: 0 10px 10px 0; }
+
+        td {
+            padding: 15px 14px;
+            border-bottom: 1px solid #1E293B;
+            font-size: 14px;
+            color: #E2E8F0;
+            transition: background 0.2s ease, transform 0.2s var(--ease), color 0.2s ease;
+        }
+
+        td:nth-child(2) {
+            color: var(--gold);
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        tr:not(:first-child) {
+            animation: rowIn 0.45s var(--ease) both;
+        }
+
+        tr:nth-child(2) { animation-delay: 0.03s; }
+        tr:nth-child(3) { animation-delay: 0.06s; }
+        tr:nth-child(4) { animation-delay: 0.09s; }
+        tr:nth-child(5) { animation-delay: 0.12s; }
+        tr:nth-child(n+6) { animation-delay: 0.15s; }
+
+        @keyframes rowIn {
+            from { opacity: 0; transform: translateX(-12px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        tr:not(:first-child):hover td {
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        tr:not(:first-child):hover td:first-child {
+            box-shadow: inset 3px 0 0 var(--green);
+            color: #fff;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td button {
+            padding: 7px 14px;
+            background: transparent;
+            color: var(--red);
+            border: 1.5px solid rgba(239, 68, 68, 0.4);
+            font-size: 12px;
+        }
+
+        td button:hover {
+            background: var(--red);
+            color: #fff;
+            border-color: var(--red);
+            transform: scale(1.06);
+            box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+        }
+
+        #wrapper p {
+            text-align: center;
+            color: #475569;
+            padding: 20px;
+        }
+
+        #total {
+            margin-top: 16px;
+            text-align: right;
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 480px) {
+            body { padding: 20px 12px; }
+            .container { padding: 24px 18px; }
+            .input-area button { flex: 1; }
+            #selectedfilter { width: 100%; }
+        }
+
+        /* ---------- Accessibility ---------- */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.8">
+            <path d="M3 7a2 2 0 0 1 2-2h13a1 1 0 0 1 1 1v3"/>
+            <path d="M3 7v10a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1h-5a2 2 0 1 0 0 4h1"/>
+        </svg>
+        <h1>Expense <span>Tracker</span></h1>
+    </div>
+    <p class="subtitle">Know where it goes</p>
+
+    <div class="input-area">
+        <input type="text" placeholder="Enter Expense" id="name" required>
+        <input type="text" placeholder="Expense Amount" id="Amount" required>
+
+        <select id="ecat">
+            <option>Food</option>
+            <option>Shopping</option>
+            <option>Travel</option>
+            <option>Education</option>
+        </select>
+
+        <button class="btn-add" onclick="addit()">Add</button>
+        <button class="btn-clear" onclick="deleteall()">Delete All</button>
+    </div>
+
+    <h3>My Expenses</h3>
+
+    <select id="selectedfilter" onchange="filtereddata()">
+        <option>All</option>
+        <option>Food</option>
+        <option>Shopping</option>
+        <option>Travel</option>
+        <option>Education</option>
+    </select>
+
+    <div id="wrapper">
+      <!-- ye wala div hoga jahan end mein sab display hoga-->
+    </div>
+
+    <div id="total">
+
+    </div>
+</div>
+
+<script>
+    expenselist = localStorage.getItem('expenselist')
+    expenselist = JSON.parse(expenselist);
+
+    if (expenselist == null) {
+        expenselist = []
+    }
+    else {
+        display();
+       
+    }
+     
+    function addit() {
+        name = document.getElementById('name').value;
+        amount = document.getElementById('Amount').value;
+         category=document.getElementById('ecat').value;
+
+          if(name == '' || amount == '')
+          {
+        return;
+    }
+
+        obj = { expensename: name, expennsemaount: amount, category:category,   }
+        expenselist.push(obj)
+        localStorage.setItem("expenselist", JSON.stringify(expenselist))
+        display();
+
+         document.getElementById('name').value = '';
+         document.getElementById('Amount').value = '';
+    
+    }
+
+   function display()
+   {  
+    selected=document.getElementById('selectedfilter').value;
+
+  
+        temp=`<table>`
+            temp+=`<tr>
+                <th>Expensename</th>
+                <th>Expenseamount</th>
+                <th>Category</th>
+            </tr>`
+
+            // ye neeche wala foreach loop display ke liye hai issliye isme add hote jaayege issiliye ye loop mein likha
+
+           expenselist.forEach((e,index)=>{
+            if (selected === 'All' || e.category === selected) {
+    temp+=`<tr> 
+        <td> ${e.expensename}</td>
+        <td> ${e.expennsemaount}</td>
+        <td> ${e.category} </td>
+        <td><button onclick="deleteit(${index})">Delete</button></td>
+
+        </tr>`
+}                                                        
+})                                                       
+
+temp+=`</table>`
+      document.getElementById('wrapper').innerHTML=temp;
+      calculatetotal()    
+   }
+      
+     
+
+    function deleteit(index) {
+        expenselist.splice(index, 1)
+        localStorage.setItem("expenselist", JSON.stringify(expenselist))
+        display();
+    }
+
+    function deleteall()
+    {
+        expenselist=[]
+        localStorage.setItem('expenselist',JSON.stringify(expenselist))
+        display();
+      document.getElementById('total').value='0';
+    }
+
+
+    function filtereddata()
+    {
+        display();
+        
+    }
+
+    function calculatetotal()
+    {
+       t=0
+       
+      expenselist.forEach((e)=>{
+         t=t+parseInt(e.expennsemaount)
+        
+
+        })
+        
+         document.getElementById('total').innerHTML="Total"+ t;
+
+    
+    }
+  
+</script>
+</body>
+</html>
