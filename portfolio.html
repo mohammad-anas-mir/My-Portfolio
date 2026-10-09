@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Anas Mir - beginner web developer building simple, functional websites with HTML, CSS and JavaScript.">
   <title>Anas Mir — Portfolio</title>
   <style>
     * {
@@ -16,11 +17,13 @@
       --bg-soft:   #161b22;
       --text:      #e6edf3;
       --muted:     #8b949e;
-      --accent:    #2dd4bf;   /* teal */
-      --accent-2:  #f4b942;   /* warm gold - CTA/highlight ke liye */
+      --accent:    #2dd4bf;
+      --accent-2:  #f4b942;
       --border:    #262c36;
       --maxw:      950px;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
       background: var(--bg);
@@ -32,11 +35,17 @@
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
+    :focus-visible {
+      outline: 2px solid var(--accent-2);
+      outline-offset: 3px;
+    }
+
     section {
       max-width: var(--maxw);
       margin: 0 auto;
       padding: 70px 24px;
     }
+    section[id] { scroll-margin-top: 72px; }
 
     h1, h2, h3, h4, h5 { line-height: 1.25; }
 
@@ -78,8 +87,15 @@
       text-decoration: none;
     }
 
-    #menuToggle { display: none; }
-    .menu-btn { display: none; font-size: 1.6rem; cursor: pointer; color: var(--text); }
+    .menu-btn {
+      display: none;
+      background: none;
+      border: 0;
+      font-size: 1.6rem;
+      line-height: 1;
+      cursor: pointer;
+      color: var(--text);
+    }
 
     /* ================= HERO ================= */
     .hero {
@@ -175,9 +191,7 @@
       border-color: var(--accent);
       transform: translateY(-4px);
     }
-    .project-card h3,
-    .project-card h4,
-    .project-card h5 {
+    .project-card h3 {
       margin-bottom: 10px;
       color: var(--accent-2);
       font-size: 1.15rem;
@@ -187,6 +201,22 @@
       font-size: 0.92rem;
       margin-bottom: 16px;
       flex-grow: 1;
+    }
+    .project-card ul {
+      list-style: none;
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin: -6px 0 16px;
+    }
+    .project-card li {
+      position: relative;
+      padding-left: 1.1em;
+    }
+    .project-card li::before {
+      content: "›";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
     }
     .tag-row {
       display: flex;
@@ -250,7 +280,12 @@
         gap: 16px;
         display: none;
       }
-      #menuToggle:checked ~ .nav-links { display: flex; }
+      .nav-links.open { display: flex; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
     }
   </style>
 </head>
@@ -258,121 +293,216 @@
   <header>
     <nav>
       <div class="logo">Anas Mir</div>
-      <input type="checkbox" id="menuToggle" name="">
-      <label for="menuToggle" class="menu-btn">☰</label>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks">☰</button>
 
-      <ul class="nav-links">
-        <li> <a href="#about"> About </a></li>
-        <li> <a href="#skills"> Skills </a></li>
-        <li> <a href="#projects"> Projects </a></li>
-        <li> <a href="#contact"> Contact </a></li>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
   </header>
 
-  <section class="hero">
-    <p class="eyebrow">Hi, my name is</p>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Hi, my name is</p>
 
-    <h1> Anas Mir</h1>
+      <h1>Anas Mir</h1>
 
-    <p class="sub"> A web developer who builds clean, fuctional websites with HTML &amp; CSS. I like turning ideas into real, working things on the screen </p>
+      <p class="sub">A web developer who builds clean, functional websites with HTML &amp; CSS. I like turning ideas into real, working things on the screen.</p>
 
-    <div class="btn-row">
-      <a href="#projects" class="btn btn-primary">See My Work</a>
-      <a href="#contact" class="btn btn-outline">Get in Touch</a>
-    </div>
-    
-  </section>
+      <div class="btn-row">
+        <a href="#projects" class="btn btn-primary">See My Work</a>
+        <a href="#contact" class="btn btn-outline">Get in Touch</a>
+      </div>
+    </section>
 
-  <section id="about">
-    <h2 class="section-title">About Me</h2>
-    <p>
-      I'm a beginner web developer learning HTML,CSS,C,and JavaScript. I enjoy building simple websites and learning new skills.
-    </p>
-     </section>
+    <section id="about">
+      <h2 class="section-title">About Me</h2>
+      <p>
+        I'm a beginner web developer learning HTML, CSS, C, and JavaScript. I enjoy building simple websites and learning new skills.
+      </p>
+    </section>
 
+    <section id="skills">
+      <h2 class="section-title">Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-chip">HTML</div>
+        <div class="skill-chip">CSS</div>
+        <div class="skill-chip">Git &amp; GitHub</div>
+        <div class="skill-chip">JavaScript</div>
+        <div class="skill-chip">C Language</div>
+        <div class="skill-chip">Responsive Design</div>
+      </div>
+    </section>
 
-       <section id="skills">
-        <h3 class="section-title">Skills</h3>
-        <div class="skills-grid">
-          <div class="skill-chip">HTML</div>
-          <div class="skill-chip">Css</div>
-          <div class="skill-chip">Git &amp; Git Hub</div>
-          <div class="skill-chip">JavaScript</div>
-           <div class="skill-chip">C-Language</div>
-          <div class="skill-chip">Responsive Design</div>
+    <section id="projects">
+      <h2 class="section-title">Projects</h2>
+      <div class="project-list">
 
-          
-        </div>
-       </section>
-
-
-       <section id="projects">
-        <h2 class="section-title">Projects</h2>
-        <div class="project-list">
-          <div class="project-card">
-            <h3>Calculator</h3>
-            <p> JavaScript Calculator functional, interactive calculator application that processes standard mathematical operations in real time. Built as a core portfolio piece, this project showcases clean DOM manipulation, precise event handling, and modern CSS layout techniques.🚀 Key FeaturesCore Arithmetic: Handles addition, subtraction, multiplication, and division seamlessly.Smart Functions: Includes a clear screen C function and a backspace/delete option for easy corrections.Responsive Design: Uses a flexible grid structure that adapts perfectly to desktop, tablet, and smartphone screens.Input Validation: Equipped with error handling to safely manage invalid expressions.</p>
-            <div class="tag-row">
-          <span class="tag">HTML</span>
-          <span class="tag">CSS</span>
-          <span class="tag">Js</span>
-        </div>
-        <a href="java72.html">Live Demo →</a>
+        <article class="project-card">
+          <h3>Calculator</h3>
+          <p>Real-time JavaScript calculator with clean DOM handling and a responsive grid layout.</p>
+          <ul>
+            <li>Addition, subtraction, multiplication and division</li>
+            <li>Clear (C) and backspace</li>
+            <li>Invalid expression handling</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JS</span>
           </div>
+          <a href="java72.html">Live Demo →</a>
+        </article>
 
-      <div class="project-card">
-        <h3>Tic-Tac-Toe</h3>
-        <p>Interactive Tic Tac Toe game developed using HTML, CSS, and JavaScript, featuring dynamic gameplay, turn management, win/draw detection, and game reset functionality.</p>
-        <div class="tag-row">
-          <span class="tag">HTML</span>
-          <span class="tag">CSS</span>
-          <span class="tag">Js</span>
-        </div>
-        <a href="java56.html">Live Demo →</a>
+        <article class="project-card">
+          <h3>Tic-Tac-Toe</h3>
+          <p>Interactive Tic Tac Toe game with turn management, win/draw detection and a reset button.</p>
+          <div class="tag-row">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JS</span>
+          </div>
+          <a href="java56.html">Live Demo →</a>
+        </article>
+
+        <article class="project-card">
+          <h3>GST Calculator</h3>
+          <p>Point-of-sale calculator that instantly updates subtotal, discount and GST as you type.</p>
+          <ul>
+            <li>Live price breakdown, no refresh needed</li>
+            <li>Built with HTML5, CSS3 and a lightweight JS library</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JS</span>
+          </div>
+          <a href="java74.html">Live Demo →</a>
+        </article>
+
+        <article class="project-card">
+          <h3>Quote Generator</h3>
+          <p>Quote generator for your daily motivation.</p>
+          <div class="tag-row">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JS</span>
+          </div>
+          <a href="java55.html">Live Demo →</a>
+        </article>
+
+
+          <article class="project-card">
+          <h3>Expense Tracker</h3>
+          <p> A streamlined, focused Expense Tracker application built with HTML, CSS, and vanilla JavaScript. This tool is designed purely for tracking spending, allowing users to log their debits and instantly see their total accumulated expenses.
+
+✨ Key Features
+
+• Log Debits: Quickly input individual expenses with a description and cost.
+• Running Total: Automatically aggregates all logged expenses to display a single, clear Total Spent figure.
+• Clean Expense History: Displays a chronological list of all debits with an option to remove items.</p>
+          <div class="tag-row">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JS</span>
+          </div>
+          <a href=".java85.html">Live Demo →</a>
+        </article>
+
+
+          <article class="project-card">
+          <h3>To-Do-List</h3>
+          <p>📋 Project Description
+
+A clean, interactive To-Do List application built using HTML, CSS, and vanilla JavaScript. This project allows users to efficiently manage their daily tasks through an intuitive and responsive user interface.
+
+✨ Key Features
+
+• Add & Delete Tasks: Instantly add new tasks to the list or remove them when they are no longer needed.
+• Mark as Completed: Click on a task to strike it through, visually marking it as done.
+• Responsive Design: A mobile-friendly layout that looks great on desktops, tablets, and smartphones.</p>
+          <div class="tag-row">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JS</span>
+          </div>
+          <a href="java83.html">Live Demo →</a>
+        </article>
+
+
+
+         <article class="project-card">
+          <h3>Login-Page</h3>
+          <p>A secure and user-friendly Login Page built with HTML, CSS, and vanilla JavaScript. The application focuses on a smooth user experience by including an interactive password visibility toggle.
+
+✨ Key Features
+
+• Password Toggle: Features a functional eye icon that allows users to instantly hide or unhide their password while typing.<p>
+          <div class="tag-row">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JS</span>
+          </div>
+          <a href="java91.html">Live Demo →</a>
+        </article>
+
+        <!--
+          NAYA PROJECT: neeche wala block copy karke yahin paste karo.
+
+        <article class="project-card">
+          <h3>Project Name</h3>
+          <p>Ek-do line ka description.</p>
+          <div class="tag-row">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JS</span>
+          </div>
+          <a href="https://project-url.com" target="_blank" rel="noopener noreferrer">Live Demo →</a>
+        </article>
+        -->
+
       </div>
+    </section>
 
-      <div class="project-card">
-        <h4>GST Calculator</h4>
-        <p> A fast, interactive financial calculator built with HTML, CSS, and a streamlined JS script to process point-of-sale calculations instantly.Key FeaturesStreamlined Scripting: Utilizes a lightweight JavaScript library for fast element selection and efficient event handling.Interactive POS Math: Processes dynamic user inputs to instantly update subtotals, discount amounts, and GST figures.Real-Time Data Binding: Syncs input fields instantly so users see final price breakdowns without needing to refresh.Tech StackFrontend: HTML5, CSS3, JavaScript Library</p>
-        <div class="tag-row">
-          <span class="tag">HTML</span>
-          <span class="tag">CSS</span>
-          <span class="tag">Js</span>
-        </div>
-        <a href="java74.html">Live Demo →</a>
-      </div>
-
-      <div class="project-card">
-        <h5>Quote Generator</h5>
-        <p> Quote Generator for your daily Motivation </p>
-        <div class="tag-row">
-          <span class="tag">HTML</span>
-          <span class="tag">CSS</span>
-          <span class="tag">Js</span>
-        </div>
-        <a href="java55.html">Live Demo →</a>
-      </div>
-        </div>
-       </section>
-
-        <section id="contact">
-    <h2 class="section-title">Contact Me</h2>
-    <!-- Ye form kahin bhejta nahi (JS ya backend nahi hai).
-         Agar real message chahiye to action="mailto:youremail@gmail.com" 
-         laga sakte ho, ya Formspree jaisi service use karo. -->
-    <form action="https://formspree.io/f/mgavegoz" method="POST">
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Your Email" required>
-      <textarea name="message" placeholder="Your Message" required></textarea>
-      <button type="submit" class="btn btn-primary" style="border:none; cursor:pointer;">Send Message</button>
-    </form>
-  </section>
+    <section id="contact">
+      <h2 class="section-title">Contact Me</h2>
+      <!-- action mein apna form link paste karo -->
+      <form action="YOUR_FORM_LINK_HERE" method="POST">
+        <input type="text" name="name" placeholder="Your Name" required autocomplete="name">
+        <input type="email" name="email" placeholder="Your Email" required autocomplete="email">
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn btn-primary" style="border:none; cursor:pointer;">Send Message</button>
+      </form>
+    </section>
+  </main>
 
   <footer>
     &copy; 2026 Anas Mir. Built with HTML &amp; CSS.
   </footer>
 
+  <script>
+    (function () {
+      var btn = document.getElementById('menuBtn');
+      var links = document.getElementById('navLinks');
 
+      function setMenu(open) {
+        links.classList.toggle('open', open);
+        btn.setAttribute('aria-expanded', String(open));
+      }
+
+      btn.addEventListener('click', function () {
+        setMenu(!links.classList.contains('open'));
+      });
+      links.addEventListener('click', function (e) {
+        if (e.target.closest('a')) setMenu(false);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') setMenu(false);
+      });
+    })();
+  </script>
 </body>
 </html>
